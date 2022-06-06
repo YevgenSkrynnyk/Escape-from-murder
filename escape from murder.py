@@ -62,7 +62,7 @@ class Player(GameSprite):
             self.rect.x = self.rect.x-self.speed 
         if keys[K_RIGHT] and self.rect.x < win_width - 80 and m_r:
             self.rect.x = self.rect.x+self.speed 
-        
+
 class Enemy(GameSprite): 
     direction = 'left' 
     def update(self): 
@@ -209,15 +209,11 @@ while game:
         elif e.type == KEYDOWN:
             if e.key == K_SPACE:
                 for hide in hides:
-                    if sprite.collide_rect(player, bed1):
+                    if sprite.spritecollide(player, hides, False):
                         player = Player('кольт.png',0,0,player.rect.x, player.rect.y, 0) 
                     else:
                         player = Player('кольт.png', 75,80, player.rect.x, player.rect.y, 5)
 
-                    if sprite.collide_rect(player, wardrobe):
-                        player = Player('кольт.png',0,0,player.rect.x, player.rect.y, 0) 
-                    else:
-                        player = Player('кольт.png', 75,80, player.rect.x, player.rect.y, 5)
     if finish != True:
         '''
         if cover:
@@ -238,6 +234,7 @@ while game:
                 wall.draw_wall()
             key1_up.reset()
             for wall in walls_up:
+                player.collide_somthing(player, wall, False)
                 if sprite.spritecollide(player, walls_up, False):
 
                     if abs(player.rect.top - wall.rect.bottom) < 5:
@@ -362,6 +359,5 @@ while game:
             time.delay(500)
             mixer.music.load("Bmusic.mp3")
             mixer.music.play()
-            
     display.update() 
     clock.tick(FPS)
