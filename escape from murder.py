@@ -50,9 +50,9 @@ class GameSprite(sprite.Sprite):
 class Player(GameSprite): 
     def update(self): 
         keys = key.get_pressed() 
-        if keys[K_UP] and self.rect.y > 2 and move_u: 
+        if keys[K_UP] and self.rect.y > 5 and move_u: 
             self.rect.y = self.rect.y-self.speed 
-        if keys[K_DOWN] and self.rect.y < win_height - 60 and move_d: 
+        if keys[K_DOWN] and self.rect.y < win_height - 80 and move_d: 
             self.rect.y = self.rect.y+self.speed 
         if keys[K_LEFT] and self.rect.x > 2 and move_l:
             self.rect.x = self.rect.x-self.speed 
@@ -64,12 +64,16 @@ class Player(GameSprite):
             if sprite.spritecollide(self, targets, False):
                 if abs(self.rect.top - target.rect.bottom) < 5:
                     move_u = False
+                    self.rect.y += 1
                 if abs(self.rect.bottom - target.rect.top) < 5:
                     move_d = False
+                    self.rect.y -= 1
                 if abs(self.rect.left - target.rect.right) < 5:
                     move_l = False
+                    self.rect.x += 1
                 if abs(self.rect.right - target.rect.left) < 5:
                     move_r = False
+                    self.rect.x -= 1
             else:
                 move_u = True
                 move_d = True
@@ -103,19 +107,20 @@ class Wall(sprite.Sprite):
     def draw_wall(self): 
         window.blit(self.image, (self.rect.x, self.rect.y)) 
 
+#window
 win_width = 1200 
 win_height = 700
 window = display.set_mode((win_width, win_height)) 
 display.set_caption("Escape from murder") 
 background = transform.scale(image.load("floor.png"), (win_width, win_height)) 
 
-
+#lists
 furniture = []
 furniture_up = []
 walls = []
 walls_up = []
-hides = []
-hides_up = []
+hides = sprite.Group()
+hides_up = sprite.Group()
 refls = []
 refls_up = []
 keys_down = []
@@ -123,23 +128,28 @@ keys_up = []
 doors = []
 doors_up = []
 
+#sprites
 player = Player('кольт.png',60,80, 80, win_height -120, 4) 
-murder = Enemy('murder.png',110, 100,win_width -90, 280, 2)
+murder = Enemy('murder.png',110, 100, 750, 275, 2)
 
 key1_up = GameSprite("key.png", 65, 25, 1000, 600, 0)
 keys_up.append(key1_up)
 
+#furiture
 bed1 = GameSprite("bed.png", 125, 185, 535, 520, 0)
 furniture.append(bed1)
-hides.append(bed1)
+#hides.append(bed1)
+hides.add(bed1)
 
 bed1_up = GameSprite("bed.png", 125, 185, 0, 360, 0)
 furniture_up.append(bed1_up)
-hides_up.append(bed1_up)
+#hides_up.append(bed1_up)
+hides_up.add(bed1_up)
 
-wardrobe = GameSprite('wardrobe.png', 50, 200, 685, 530, 0)
-furniture.append(wardrobe)
-hides.append(wardrobe)
+wardrobe_up = GameSprite('wardrobe.png', 200, 90, 0, 275, 0) 
+furniture_up.append(wardrobe_up) 
+#hides_up.append(wardrobe_up)
+hides_up.add(wardrobe_up)
 
 washbashin = GameSprite('washbashin.png', 75, 75, 900, 250, 0)
 furniture.append(washbashin)
@@ -147,18 +157,49 @@ furniture.append(washbashin)
 bath = GameSprite('bath.png', 185, 100, 1025, 260, 0)
 furniture.append(bath)
 
+toilet = GameSprite('toilet.png', 100, 90, 865, 420, 0) 
+furniture.append(toilet)
+
+sofa = GameSprite('sofa.png', 250, 80, 685, 615, 0 ) 
+furniture.append(sofa)
+
+table = GameSprite('table.png', 300, 100, 900, 375, 0) 
+furniture_up.append(table)
+
+table_main = GameSprite('table_main.png', 150, 200, 1050, 150, 0) 
+furniture_up.append(table_main)
+
+g_stove = GameSprite('g_stove.png', 100, 100, 810, 375, 0) 
+furniture_up.append(g_stove)
+
 door1 =  Wall(81, 49, 0, 70, 400, 100, 10)
 doors.append(door1)
-
-door2 = Wall(81, 49, 0, 1190, 100, 10, 100) 
+door2 = Wall(81, 49, 0, 250, 500, 10, 100)
 doors.append(door2)
+door3 = Wall(81, 49, 0, 350, 400, 100, 10)
+doors.append(door3)
+door4 = Wall(81, 49, 0, 590, 400, 100, 10)
+doors.append(door4)
+door5 = Wall(81, 49, 0, 960, 500, 110, 10)
+doors.append(door5)
+door_to_up = Wall(81, 49, 0, 1190, 100, 10, 100) 
+doors.append(door_to_up)
 
-door_main = Wall(81, 49, 0, 0, 200, 10, 100)
-doors.append(door_main)
-
-door1_up = Wall(81, 49, 0, 1190, 5, 10, 120) 
+door1_up = Wall(81, 49, 0, 300, 0, 10, 150)
 doors_up.append(door1_up)
+door2_up = Wall(81, 49, 0, 300, 475, 10, 125)
+doors_up.append(door2_up)
+door3_up = Wall(81, 49, 0, 800, 225, 10, 115)
+doors_up.append(door3_up)
+door4_up = Wall(81, 49, 0, 800, 570, 10, 130)
+doors_up.append(door4_up)
 
+door_main = Wall(81, 49, 0, 0, 200, 10, 100) 
+doors.append(door_main)
+door_to_down = Wall(81, 49, 0, 1190, 5, 10, 120) 
+doors_up.append(door_to_down)
+
+#walls
 w1_up = Wall(0, 0, 0, 300, 140, 10, 340)
 walls_up.append(w1_up)
 w2_up = Wall(0, 0, 0, 0, 350, 300, 10)
@@ -169,7 +210,7 @@ w4_up = Wall(0, 0, 0, 800, 340, 10, 230)
 walls_up.append(w4_up)
 w5_up = Wall(0, 0, 0, 805, 365, 130, 10)
 walls_up.append(w5_up)
-w6_up = Wall(0, 0, 0, 1060, 365, 140, 10)
+w6_up = Wall(0, 0, 0, 900, 365, 500, 10) 
 walls_up.append(w6_up)
 w7_up = Wall(0, 0, 0, 800, 125, 10, 100)
 walls_up.append(w7_up)
@@ -209,6 +250,7 @@ walls.append(w15)
 w16 = Wall(0, 0, 0, 250, 600, 10, 100)
 walls.append(w16)
 
+#game
 game = True 
 clock = time.Clock() 
 FPS = 60 
@@ -218,16 +260,21 @@ finish = False
 floor2 = False
 floor1 = True
 
+hidden = False
+
 add_list = True
 add_list_up = True
 day = 1
 cover = True
 
+#music
 mixer.init() 
 mixer.music.load('Bmusic.mp3') 
 mixer.music.play()
 key_sound = mixer.Sound("key.ogg")
 scream = mixer.Sound("scream.ogg")
+happy = mixer.Sound("happy.ogg")
+#text
 font.init() 
 font = font.Font(None, 70) 
 
@@ -244,18 +291,20 @@ while game:
         if e.type == QUIT: 
             game = False
         elif e.type == KEYDOWN:
-            if e.key == K_SPACE:
+            if e.key == K_SPACE and not hidden:
+                if floor2:
+                    if sprite.spritecollide(player, hides_up, False):
+                        player = Player('кольт.png',0,0,player.rect.x, player.rect.y, 0)
+                        hidden = True
+                        player.collide(refls_up)
                 if floor1:
                     if sprite.spritecollide(player, hides, False):
                         player = Player('кольт.png',0,0,player.rect.x, player.rect.y, 0) 
-                    else:
-                        player = Player('кольт.png', 60,80, player.rect.x, player.rect.y, 5)
-                elif floor2:
-                    if sprite.spritecollide(player, hides_up, False):
-                        player = Player('кольт.png',0,0,player.rect.x, player.rect.y, 0) 
-                    else:
-                        player = Player('кольт.png', 60,80, player.rect.x, player.rect.y, 5)
-                
+                        hidden = True
+                        player.collide(refls)
+            else:
+                player = Player('кольт.png',60,80,player.rect.x, player.rect.y, 4)
+                hidden = False
     if finish != True:
         '''
         if cover:
@@ -288,16 +337,19 @@ while game:
             player.collide(refls)
             for key_down in keys_down:
                 key_down.reset()
-            if sprite.collide_rect(player, door2): 
+            if sprite.collide_rect(player, door_to_up): 
                 floor1 = False
                 floor2 = True 
-                player = Player('кольт.png',60,80, 1100, 40, 4)
-            if sprite.collide_rect(player, door_main):
-                window.fill((0,0,0))
-                window.blit(won, (150, 300))
+                player = Player('кольт.png',60,80, 1050, 40, 4)
+
+            if sprite.collide_rect(player, door_main): 
+                window.fill((0,0,0)) 
+                window.blit(won, (150, 300)) 
                 display.update()
-                mixer.music.load("last.mp3")
-                mixer.music.play()
+                happy.play()
+                time.delay(3000)
+                mixer.music.load("ending.ogg")
+                mixer.music.play() 
                 finish = True
 
         elif floor2:
@@ -305,6 +357,8 @@ while game:
                 wall.draw_wall()
             for lox in furniture_up:
                 lox.reset()
+            for door in doors_up:
+                door.draw_wall()
             if add_list_up:
                 for wall in walls_up:
                     refls_up.append(wall)
@@ -313,8 +367,6 @@ while game:
                 add_list_up = False
             for key_up in keys_up:
                 key_up.reset()
-            for door in doors_up:
-                door.draw_wall()
 
             if sprite.collide_rect(player, key1_up):
                 key_sound.play()
@@ -322,11 +374,12 @@ while game:
                 key1_up = GameSprite("key.png", 0, 0, 0, 0, 0)
 
             player.collide(refls_up)
-            if sprite.collide_rect(player, door1_up):
+            if sprite.collide_rect(player, door_to_down):
                 floor2 = False 
                 floor1 = True 
-                player = Player('кольт.png',60,80, 1100, 100, 4)
-
+                player = Player('кольт.png',60,80, 1050, 100, 4)
+            
+           
         '''      
         draw_step()
         
