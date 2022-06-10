@@ -537,7 +537,7 @@ while game:
                             key1_up = GameSprite("key.png", 0, 0, 0, 0, 0)
 
                         if sprite.collide_rect(player, key2_up):
-                            have_key1_up = True 
+                            have_key2_up = True 
                             key_sound.play() 
                             keys_up.remove(key2_up) 
                             key2_up = GameSprite("key.png", 0, 0, 0, 0, 0)
@@ -580,6 +580,10 @@ while game:
                 moving_x = False
                 moving_y = False
                 if day == 2:
+                    if language == "english":
+                        window.blit(day2, (500, 300))   
+                    elif language == "ukrainian":
+                        window.blit(day2_ua, 500, 300)
                     window.fill((0,0,0))
                     window.blit(day2, (500, 300))
                     player.rect.x -= 100
@@ -587,18 +591,30 @@ while game:
                     time.delay(4000)
                     
                 elif day == 3:
+                    if language == "english":
+                        window.blit(day3, (500, 300))   
+                    elif language == "ukrainian":
+                        window.blit(day3_ua, 500, 300)
                     window.fill((0,0,0))
                     window.blit(day3, (500, 300))
                     player.rect.x -= 100
                     display.update()
                     time.delay(4000)
                 elif day == 4:
+                    if language == "english":
+                        window.blit(day4, (500, 300))   
+                    elif language == "ukrainian":
+                        window.blit(day4_ua, 500, 300)
                     window.fill((0,0,0))
                     window.blit(day4, (500, 300))
                     player.rect.x -= 100
                     display.update()
                     time.delay(4000)
                 elif day == 5:
+                    if language == "english":
+                        window.blit(day5, (500, 300))   
+                    elif language == "ukrainian":
+                        window.blit(day5_ua, 500, 300)
                     window.fill((0,0,0))
                     window.blit(day5, (500, 300))
                     player.rect.x -= 100
